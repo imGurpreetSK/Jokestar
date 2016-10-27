@@ -14,9 +14,9 @@ The finished app consists of four modules:
 ![alt tag](https://raw.githubusercontent.com/GurpreetSK95/Jokestar/master/screenshots/flow.png)
 
 <p align="center">
-  <img src="/screenshots/device-2016-10-27-223257.png" width="200"/>
-  <img src="/screenshots/device-2016-10-27-223420.png" width="200"/>
-  <img src="/screenshots/device-2016-10-27-223323.png" width="200"/>
+  <img src="/screenshots/device-2016-10-27-223257.png" width="250"/>
+  <img src="/screenshots/device-2016-10-27-223420.png" width="250"/>
+  <img src="/screenshots/device-2016-10-27-223323.png" width="250"/>
 </p>
 
 # What I learned
