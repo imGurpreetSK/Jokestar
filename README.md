@@ -13,6 +13,7 @@ The finished app consists of four modules:
 ## App flow:
 ![alt tag](https://raw.githubusercontent.com/GurpreetSK95/Jokestar/master/screenshots/flow.png)
 
+## Screenshots:
 <p align="center">
   <img src="/screenshots/device-2016-10-27-223257.png" width="250"/>
   <img src="/screenshots/device-2016-10-27-223420.png" width="250"/>
