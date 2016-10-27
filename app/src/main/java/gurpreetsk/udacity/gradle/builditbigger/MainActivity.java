@@ -28,7 +28,6 @@ import gurpreetsk.me.ohmyjoke_android.JokeActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-
     ProgressBar progressBar;
     TextView tv;
     Button btn;
@@ -43,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
         btn = (Button) findViewById(R.id.tell_joke_button);
         progressBar.setVisibility(View.GONE);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        tv.setVisibility(View.VISIBLE);
+        btn.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -79,12 +85,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getJoke() {
-
         Joker joker = new Joker();
         return joker.getJoke();
-
     }
-
 
 
     public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
@@ -103,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
                                 abstractGoogleClientRequest.setDisableGZipContent(true);
                             }
                         });
-                // end options for devappserver
-
                 myApiService = builder.build();
             }
 
@@ -119,12 +120,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            Intent intent = new Intent(MainActivity.this, JokeActivity.class);
+            Intent intent = new Intent(MainActivity.this, JokeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.putExtra(JokeActivity.JOKE_KEY, result);
             progressBar.setVisibility(View.GONE);
             startActivity(intent);
-            tv.setVisibility(View.VISIBLE);
-            btn.setVisibility(View.VISIBLE);
+
         }
     }
 
