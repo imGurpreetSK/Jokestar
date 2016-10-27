@@ -9,8 +9,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
@@ -26,10 +31,40 @@ import gurpreetsk.me.ohmyjoke_android.JokeActivity;
 
 public class MainActivity extends ActionBarActivity {
 
+    InterstitialAd mInterstitialAd;
+    ProgressBar progressBar;
+    TextView tv;
+    Button btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        tv = (TextView) findViewById(R.id.instructions_text_view);
+        btn = (Button) findViewById(R.id.tell_joke_button);
+        progressBar.setVisibility(View.GONE);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.banner_ad_unit_id));
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+            }
+        });
+
+        requestNewInterstitial();
+
+    }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("91F05C97C258A272AC7D8CDF539D777E")
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
     }
 
     @Override
@@ -56,17 +91,34 @@ public class MainActivity extends ActionBarActivity {
 
     public void tellJoke(View view) {
 
-        Joker joker = new Joker();
-        String joke = joker.getJoke();
-
+        progressBar.setVisibility(View.VISIBLE);
+        tv.setVisibility(View.GONE);
+        btn.setVisibility(View.GONE);
+        findViewById(R.id.tell_joke_button).setVisibility(View.GONE);
+        String joke = getJoke();
         new EndpointsAsyncTask().execute(new Pair<Context, String>(this, joke));
 
     }
 
+    public String getJoke() {
+
+        Joker joker = new Joker();
+        return joker.getJoke();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            finish();
+        }
+        else
+            finish();
+    }
 
     class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
         private MyApi myApiService = null;
-        private Context context;
 
         @Override
         protected String doInBackground(Pair<Context, String>... params) {
@@ -74,8 +126,6 @@ public class MainActivity extends ActionBarActivity {
                 MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                         new AndroidJsonFactory(), null)
                         .setRootUrl("https://sunshine-146209.appspot.com/_ah/api/")
-//                        .setRootUrl("http://10.0.2.2:8080/_ah/api/")        //for emulators
-//                        .setRootUrl("http://192.168.0.10:8080/_ah/api/")      //for deploying on physical device
                         .setApplicationName(getString(R.string.app_name))
                         .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                             @Override
@@ -88,7 +138,6 @@ public class MainActivity extends ActionBarActivity {
                 myApiService = builder.build();
             }
 
-            context = params[0].first;
             String joke = params[0].second;
 
             try {
@@ -102,7 +151,10 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(String result) {
             Intent intent = new Intent(MainActivity.this, JokeActivity.class);
             intent.putExtra(JokeActivity.JOKE_KEY, result);
+            progressBar.setVisibility(View.GONE);
             startActivity(intent);
+            tv.setVisibility(View.VISIBLE);
+            btn.setVisibility(View.VISIBLE);
         }
     }
 
