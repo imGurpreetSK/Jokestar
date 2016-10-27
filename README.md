@@ -10,7 +10,7 @@ The finished app consists of four modules:
 
 # Images
 
-![alt tag]
+![alt tag](https://raw.githubusercontent.com/GurpreetSK95/Jokestar/master/screenshots/flow.png)
 
 # What I learned
 * Add free and paid flavors to an app, and set up your build to share code between them
