@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,9 +30,9 @@ import gurpreetsk.me.jokestar.backend.myApi.MyApi;
 import gurpreetsk.me.ohmyjoke_android.JokeActivity;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
-    InterstitialAd mInterstitialAd;
+
     ProgressBar progressBar;
     TextView tv;
     Button btn;
@@ -46,25 +47,6 @@ public class MainActivity extends ActionBarActivity {
         btn = (Button) findViewById(R.id.tell_joke_button);
         progressBar.setVisibility(View.GONE);
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.banner_ad_unit_id));
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-            }
-        });
-
-        requestNewInterstitial();
-
-    }
-
-    private void requestNewInterstitial() {
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("91F05C97C258A272AC7D8CDF539D777E")
-                .build();
-
-        mInterstitialAd.loadAd(adRequest);
     }
 
     @Override
@@ -107,15 +89,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-            finish();
-        }
-        else
-            finish();
-    }
+
 
     public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
         private MyApi myApiService = null;
