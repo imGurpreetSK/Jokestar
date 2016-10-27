@@ -18,7 +18,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     productFlavors {
         free {
             applicationId "com.udacity.gradle.builditbigger.free"
@@ -34,8 +33,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(":ohmyjoke")
     compile project(":ohmyjoke-android")
-    compile 'com.android.support:appcompat-v7:24.1.1'
 
     // Added for AdMob
-    compile 'com.google.android.gms:play-services-ads:9.4.0'
+    compile 'com.android.support:appcompat-v7:24.0.2'
+    compile 'com.google.android.gms:play-services-ads:9.8.00'
+    compile 'com.google.code.findbugs:jsr305:2.0.1'
+    compile project(path: ':backend', configuration: 'android-endpoints')
 }
