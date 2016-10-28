@@ -20,6 +20,12 @@ The finished app consists of four modules:
   <img src="/screenshots/device-2016-10-27-223323.png" width="250"/>
 </p>
 
+# Running on local machine
+
+* Clone the repo and import in Android Studio
+* Select a build variant (lower left side)
+* Run on emulator or physical device
+
 # What I learned
 * Add free and paid flavors to an app, and set up your build to share code between them
 * Factor reusable functionality into a Java library
